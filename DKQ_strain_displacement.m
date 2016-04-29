@@ -1,10 +1,6 @@
 function B=DKQ_strain_displacement(J, dHxdxi, dHxdyi, dHydxi, dHydyi)
 
 
-% j11 = J(2,2)/det(J);
-% j12 = -J(1,2)/det(J);
-% j21 = -J(2,1)/det(J);
-% j22 = J(2,2)/det(J);
 
 j = inv(J);
 
