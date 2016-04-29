@@ -1,4 +1,4 @@
-function N =  Quad_shape_fxn(xi, yi)
+function N =  DKQ_shape_fxn(xi, yi)
 
     % Shape functions for Quad element
     % 8 noded element (4 corners and 4 mid nodes)
