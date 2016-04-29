@@ -66,20 +66,21 @@ for iel = 1:1:nel
     d_k = num2cell(-y_ij.^2./l_ij);
     e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
     
-    ke = zeros(edof,edof);
+    ke = zeros(exdof,edof);
     f = zeros(edof,1);
     
-    for intx=1:nglb
-        xi=pointb(intx,1);                     % sampling point in x-axis
-        wtx=weightb(intx,1);                   % weight in x-axis
+    for intx = 1:1:nglb
+        xi = pointb(intx,1);                     % sampling point in x-axis
+        wtx = weightb(intx,1);                   % weight in x-axis
         for inty=1:nglb
-            yi=pointb(inty,2);                    % sampling point in y-axis
-            wty=weightb(inty,2) ;                  % weight in y-axis
+            yi = pointb(inty,2);                    % sampling point in y-axis
+            wty = weightb(inty,2) ;                  % weight in y-axis
 
             [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKQ_dH(a_k, b_k, c_k, d_k, e_k, xi, yi);
-            B = DKQ_strain_displacement(J);
-            kb=kb+B_pb'*D_pb*B_pb*wtx*wty*detjacobian;
-
+            B = DKQ_strain_displacement(J, dHxdxi, dHxdyi, dHydxi, dHydyi);
+            ke = ke + B'*D*B*wtx*wty*det(J);
+            fe = Force(nnel, N, P);
+            f = f + fe*wtx*wty*det(J);
         end
     end
 end
