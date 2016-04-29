@@ -23,7 +23,7 @@ load coords.dat;
 load connectivity.dat;
 load material.dat;
 load geometry.dat;
-nel = length(connectivity);
+nel = size(connectivity,1);
 nnel = size(connectivity,2);
 ndof = 3;
 nnode = length(coords);
@@ -41,9 +41,13 @@ t = geometry(:,3);
 E = material(:,1);
 nu = material(:,2);
 
+P = -0.5;
+
 D = (E*t^3/(12*(1-nu)^2))*[1 nu 0; nu 1 0; 0 0 0.5*(1-nu)];
 
 %%
+
+[pt,wt] = G_Quadrature('second');
 
 % Loop over all elements
 
@@ -56,8 +60,8 @@ for iel = 1:1:nel
         y(i)=coords(node(i),2);
     end
     
-    x_ij = diff([x; x(1)]);
-    y_ij = diff([y; y(1)]);
+    x_ij = -diff([x, x(1)]);
+    y_ij = -diff([y, y(1)]);
            
     l_ij = x_ij.^2 + y_ij.^2;
     a_k = num2cell(-x_ij./l_ij);
@@ -66,21 +70,31 @@ for iel = 1:1:nel
     d_k = num2cell(-y_ij.^2./l_ij);
     e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
     
-    ke = zeros(exdof,edof);
+    k = zeros(edof,edof); 
     f = zeros(edof,1);
     
-    for intx = 1:1:nglb
-        xi = pointb(intx,1);                     % sampling point in x-axis
-        wtx = weightb(intx,1);                   % weight in x-axis
-        for inty=1:nglb
-            yi = pointb(inty,2);                    % sampling point in y-axis
-            wty = weightb(inty,2) ;                  % weight in y-axis
+    % Loop over all integration points
+    
+    for intx = 1:1:2
+        xi = pt(intx,1);
+        wtx = wt(intx,1);
+        for inty=1:2
+            yi = pt(inty,2);
+            wty = wt(inty,2);
 
             [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKQ_dH(a_k, b_k, c_k, d_k, e_k, xi, yi);
+            J = jacobian(x_ij, y_ij, xi, yi);
+            N = Quad_shape_fxn(xi,yi);
             B = DKQ_strain_displacement(J, dHxdxi, dHxdyi, dHydxi, dHydyi);
-            ke = ke + B'*D*B*wtx*wty*det(J);
-            fe = Force(nnel, N, P);
+          
+            k = k + B'*D*B*wtx*wty*det(J);
+            fe = El_Force(nnel, N, P);
             f = f + fe*wtx*wty*det(J);
         end
     end
+    
+    index = Elem_DOF(node,nnel,ndof);
+
+    [stif, force] = Global_Assembly(stif, force, k, f, index);
+    
 end
