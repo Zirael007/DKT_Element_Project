@@ -1,4 +1,4 @@
-function N =  Tri_shape_fxn(xi, yi)
+function N =  DKT_shape_fxn(xi, yi)
 
     % Shape functions for Triangular element
     % 6 noded element (3 corners and 3 mid nodes)
