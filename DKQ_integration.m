@@ -1,4 +1,4 @@
-function [k, f] = DKQ_integration(x_ij, y_ij, l_ij, pt, wt)
+function [k, f] = DKQ_integration(x_ij, y_ij, l_ij, pt, wt, edof, nnel, D, P)
 
     % Loop over all integration points
     
@@ -7,6 +7,9 @@ function [k, f] = DKQ_integration(x_ij, y_ij, l_ij, pt, wt)
     c_k = num2cell((0.25.*x_ij.^2 - 0.5.*y_ij.^2)./l_ij);
     d_k = num2cell(-y_ij.^2./l_ij);
     e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
+
+    k = zeros(edof,edof); 
+    f = zeros(edof,1);
     
     for intx = 1:1:2
         xi = pt(intx,1);
