@@ -1,4 +1,4 @@
-function [kk,ff]=assemble(kk,ff,k,f,index)
+function [kk,ff]=Global_Assembly(kk,ff,k,f,index)
 %----------------------------------------------------------
 %  
 %-----------------------------------------------------------
@@ -14,3 +14,4 @@ function [kk,ff]=assemble(kk,ff,k,f,index)
      end
  end
 
+end

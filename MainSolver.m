@@ -98,3 +98,11 @@ for iel = 1:1:nel
     [stif, force] = Global_Assembly(stif, force, k, f, index);
     
 end
+
+bcdof = BoundaryCondition('ss-ss-ss-ss',coords) ;
+bcval = zeros(1,length(bcdof)) ;
+
+[stif,force] = constraints(stif,force,bcdof,bcval);
+
+
+displacement = stif\force;

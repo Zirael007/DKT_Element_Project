@@ -1,4 +1,4 @@
-function [index]=elementdof(node,nnel,ndof)
+function index=Elem_DOF(node,nnel,ndof)
 %----------------------------------------------------------
 %  
 %-----------------------------------------------------------
@@ -14,3 +14,4 @@ function [index]=elementdof(node,nnel,ndof)
    end
 
  
+end
