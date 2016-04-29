@@ -1,27 +1,12 @@
-function [dHxdxi,dHxdyi, dHydxi, dHydyi]=DKQ_dH(coords,xi,yi)
+function [dHxdxi,dHxdyi, dHydxi, dHydyi]=DKQ_dH(x_ij, y_ij, l_ij, xi,yi)
   
     
 
-           rot_coords = [coords; coords(1,:)];
-
-           x_ij = diff(rot_coords(:,1));
-           y_ij = diff(rot_coords(:,2));
            
-           l_ij = x_ij.^2 + y_ij.^2;
-           
-           a_k = num2cell(-x_ij./l_ij);
            [a5, a6, a7, a8] = a_k{:};
-           
-           b_k = num2cell(0.75.*x_ij.*y_ij./l_ij);
            [b5, b6, b7, b8] = b_k{:};
-
-           c_k = num2cell((0.25.*x_ij.^2 - 0.5.*y_ij.^2)./l_ij);
            [c5, c6, c7, c8] = c_k{:};
-
-           d_k = num2cell(-y_ij.^2./l_ij);
            [d5, d6, d7, d8] = d_k{:};
-
-           e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
            [e5, e6, e7, e8] = e_k{:};
 
            dNdxi=[0.25*(2*xi+yi)*(1-yi),...

@@ -56,6 +56,16 @@ for iel = 1:1:nel
         y(i)=coords(node(i),2);
     end
     
+    x_ij = diff([x; x(1)]);
+    y_ij = diff([y; y(1)]);
+           
+    l_ij = x_ij.^2 + y_ij.^2;
+    a_k = num2cell(-x_ij./l_ij);
+    b_k = num2cell(0.75.*x_ij.*y_ij./l_ij);
+    c_k = num2cell((0.25.*x_ij.^2 - 0.5.*y_ij.^2)./l_ij);
+    d_k = num2cell(-y_ij.^2./l_ij);
+    e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
+    
     ke = zeros(edof,edof);
     f = zeros(edof,1);
     
@@ -66,10 +76,10 @@ for iel = 1:1:nel
             yi=pointb(inty,2);                    % sampling point in y-axis
             wty=weightb(inty,2) ;                  % weight in y-axis
 
-            B_pb=PlateBending(nnel,dhdx,dhdy);    % bending kinematic matrix
+            [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKQ_dH(a_k, b_k, c_k, d_k, e_k, xi, yi);
+            B = DKQ_strain_displacement(J);
+            kb=kb+B_pb'*D_pb*B_pb*wtx*wty*detjacobian;
 
-        kb=kb+B_pb'*D_pb*B_pb*wtx*wty*detjacobian;
-
-    end
+        end
     end
 end
