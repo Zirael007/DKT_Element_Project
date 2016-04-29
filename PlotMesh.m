@@ -1,28 +1,8 @@
-function PlotMesh(coordinates,nodes)
-%--------------------------------------------------------------------------
-% Code written by : Siva Srinivas Kolukula                                |
-%                   Senior Research Fellow                                |
-%                   Structural Mechanics Laboratory                       |
-%                   Indira Gandhi Center for Atomic Research              |
-%                   India                                                 |
-% E-mail : allwayzitzme@gmail.com                                         |
-%          http://sites.google.com/site/kolukulasivasrinivas/             |    
-%--------------------------------------------------------------------------
-%--------------------------------------------------------------------------
-% Purpose:
-%         To plot the Finite Element Method Mesh
-% Synopsis :
-%           PlotMesh(coordinates,nodes)
-% Variable Description:
-%           coordinates - The nodal coordinates of the mesh
-%           -----> coordinates = [node X Y] 
-%           nodes - The nodal connectivity of the elements
-%           -----> nodes = [node1 node2......]    
-%--------------------------------------------------------------------------
+function PlotMesh(coords,connectivity)
 
-nel = length(nodes) ;                  % number of elements
-nnode = length(coordinates) ;          % total number of nodes in system
-nnel = size(nodes,2);                % number of nodes per element
+nel = size(connectivity,1) ;                  % number of elements
+nnode = size(coords,1) ;          % total number of connectivity in system
+nnel = size(connectivity,2);                % number of connectivity per element
 % 
 % Initialization of the required matrices
 X = zeros(nnel,nel) ;
@@ -30,9 +10,9 @@ Y = zeros(nnel,nel) ;
 
 for iel=1:nel   
      for i=1:nnel
-     nd(i)=nodes(iel,i);         % extract connected node for (iel)-th element
-     X(i,iel)=coordinates(nd(i),1);    % extract x value of the node
-     Y(i,iel)=coordinates(nd(i),2);    % extract y value of the node
+     nd(i)=connectivity(iel,i);         % extract connected node for (iel)-th element
+     X(i,iel)=coords(nd(i),1);    % extract x value of the node
+     Y(i,iel)=coords(nd(i),2);    % extract y value of the node
      end
 end
     
@@ -45,9 +25,10 @@ end
      axis off ;
      
 % To disply the node numbers     
-     k = nodes(:,1:end);
+     k = connectivity(:,1:end);
      nd = k' ;
     for i = 1:nel
         text(X(:,i),Y(:,i),int2str(nd(:,i)),'fontsize',8,'color','k');
         text(sum(X(:,i))/4,sum(Y(:,i))/4,int2str(i),'fontsize',10,'color','r') ;
-    end        
+    end
+end

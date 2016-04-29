@@ -30,6 +30,8 @@ nnode = length(coords);
 edof = ndof*nnel;
 sdof = ndof*nnode;
 
+PlotMesh(coords,connectivity);
+
 force = zeros(sdof,1);
 stif = zeros(sdof,sdof);
 B = zeros(3,edof);
@@ -41,7 +43,7 @@ t = geometry(:,3);
 E = material(:,1);
 nu = material(:,2);
 
-P = -0.5;
+P = 0.5;
 
 D = (E*t^3/(12*(1-nu)^2))*[1 nu 0; nu 1 0; 0 0 0.5*(1-nu)];
 
@@ -106,3 +108,5 @@ bcval = zeros(1,length(bcdof)) ;
 
 
 displacement = stif\force;
+
+[w, thetax, thetay] = Post_Proc(displacement);
