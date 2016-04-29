@@ -19,10 +19,16 @@
 clc
 clear
 
-load coords.dat;
-load connectivity.dat;
 load material.dat;
 load geometry.dat;
+
+l = geometry(:,1);
+b = geometry(:,2);
+t = geometry(:,3);
+
+[coords, connectivity] = Mesh_Gen(l,b, [-0.5 -0.5], 5, 5);
+
+
 nel = size(connectivity,1);
 nnel = size(connectivity,2);
 ndof = 3;
@@ -36,9 +42,6 @@ force = zeros(sdof,1);
 stif = zeros(sdof,sdof);
 B = zeros(3,edof);
 
-l = geometry(:,1);
-b = geometry(:,2);
-t = geometry(:,3);
 
 E = material(:,1);
 nu = material(:,2);
