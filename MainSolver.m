@@ -56,4 +56,20 @@ for iel = 1:1:nel
         y(i)=coords(node(i),2);
     end
     
+    ke = zeros(edof,edof);
+    f = zeros(edof,1);
+    
+    for intx=1:nglb
+        xi=pointb(intx,1);                     % sampling point in x-axis
+        wtx=weightb(intx,1);                   % weight in x-axis
+        for inty=1:nglb
+            yi=pointb(inty,2);                    % sampling point in y-axis
+            wty=weightb(inty,2) ;                  % weight in y-axis
+
+            B_pb=PlateBending(nnel,dhdx,dhdy);    % bending kinematic matrix
+
+        kb=kb+B_pb'*D_pb*B_pb*wtx*wty*detjacobian;
+
+    end
+    end
 end
