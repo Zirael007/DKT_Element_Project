@@ -1,11 +1,15 @@
-function B=strain_displacement(jacob, H_x_eps, H_x_eta, H_y_eta, H_y_eps)
-j11 = jacob(2,2)/det(jacob);
-j12 = -jacob(1,2)/det(jacob);
-j21 = -jacob(2,1)/det(jacob);
-j22 = jacob(2,2)/det(jacob);
+function B=DKQ_strain_displacement(J, dHxdxi, dHxdyi, dHydxi, dHydyi)
 
-B=[j11*H_x_eps + j12*H_x_eta; 
-    j21*H_y_eps+j22*H_y_eta;
-    j11*H_y_eps+j12*H_y_eta+j21*H_x_eps+j22*H_x_eta];
+
+% j11 = J(2,2)/det(J);
+% j12 = -J(1,2)/det(J);
+% j21 = -J(2,1)/det(J);
+% j22 = J(2,2)/det(J);
+
+j = inv(J);
+
+B=[j(1,1)*dHxdxi + j(1,2)*dHxdyi; 
+    j(2,1)*dHydyi+j(2,2)*dHydxi;
+    j(1,1)*dHydyi+j(1,2)*dHydxi+j(2,1)*dHxdxi+j(2,2)*dHxdyi];
 
 end
