@@ -5,17 +5,17 @@
 %-------------------------------------------------------------------
 
 switch order
-    case 'second' 
+    case 4 
    
         % 2-point quadrature rule
         G_point = [-0.577350269189626 -0.577350269189626;
                        0.577350269189626  0.577350269189626] ;
         G_weight = [1 1;1 1];        
-    case 'first'
+    case 3
       
-        % 1-point quadrature eule
-        G_point = [0 0] ;
-        G_weight = [2. 2.] ;
+        % 3-point quadrature eule
+        G_point = [0.5 0; 0.5 0.5; 0 0.5] ;
+        G_weight = [1/3 1/3 1/3] ;
         
 end
 

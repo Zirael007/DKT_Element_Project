@@ -108,10 +108,10 @@ for iel = 1:1:nel
         end
     elseif nnel ==3
 %         [k, f] = DKT_integration(x_ij, y_ij, l_ij, pt, wt);
-        for intx = 1:1:2
+        for intx = 1:1:3
         xi = pt(intx,1);
         wtx = wt(intx,1);
-            for inty=1:1:2
+            for inty=1:1:3
                 yi = pt(inty,2);
                 wty = wt(inty,2);
 
