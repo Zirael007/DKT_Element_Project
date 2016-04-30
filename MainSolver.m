@@ -45,13 +45,13 @@ B = zeros(3,edof);
 E = material(:,1);
 nu = material(:,2);
 
-P = 0.5;
+P = 5000;
 
 D = (E*(t^3)/(12*(1-nu^2)))*[1 nu 0; nu 1 0; 0 0 0.5*(1-nu)];
 
 %%
 
-[pt,wt] = G_Quadrature('second');
+[pt,wt] = G_Quadrature(nnel);
 
 % Loop over all elements
 
@@ -115,20 +115,23 @@ for iel = 1:1:nel
                 yi = pt(inty,2);
                 wty = wt(inty,2);
 
-                [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKQ_dH(a_k, b_k, c_k, d_k, e_k, xi, yi);
+                [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKT_dH(p_k, q_k, r_k, t_k, xi, yi);
             
-                J = DKQ_jacob(x_ij, y_ij, xi, yi);
+%                 J = DKQ_jacob(x_ij, y_ij, xi, yi);
+                A = x_ij(3)*y_ij(1)-x_ij(1)*y_ij(3);
             
-                N = DKQ_shape_fxn(xi,yi);
+                N = DKT_shape_fxn(xi,yi);
             
-                B = DKQ_strain_displacement(J, dHxdxi, dHxdyi, dHydxi, dHydyi);
+                B = DKT_strain_displacement(x_ij,y_ij,dHxdxi, dHxdyi, dHydxi, dHydyi);
             
-                k = k + B'*D*B*wtx*wty*det(J);
+                k = k + B'*D*B*wtx*wty;
             
                 fe = El_Force(nnel, N, P);
-                f = f + fe*wtx*wty*det(J);
+                f = f + fe*wtx*wty*2*A;
             end
+            
         end
+        k=2*A*k;
     end
     
     index = Elem_DOF(node,nnel,ndof);
