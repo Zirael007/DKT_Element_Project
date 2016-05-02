@@ -15,7 +15,7 @@ switch order
       
         % 3-point quadrature eule
         G_point = [0.5 0; 0.5 0.5; 0 0.5] ;
-        G_weight = [1/3 1/3 1/3] ;
+        G_weight = [1/3 1/3; 1/3 1/3; 1/3 1/3] ;
         
 end
 

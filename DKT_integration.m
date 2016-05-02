@@ -2,11 +2,7 @@ function [k, f] = DKT_integration(x_ij, y_ij, l_ij, pt, wt)
 
     % Loop over all integration points
        
-    p_k = num2cell(-6*x_ij./l_ij);
-    q_k = num2cell(3*x_ij.*y_ij./l_ij);
-    r_k = num2cell(3*y_ij.^2/l_ij);
-    t_k = num2cell(-6*y_ij./l_ij);
-        
+       
     for intx = 1:1:2
         xi = pt(intx,1);
         wtx = wt(intx,1);

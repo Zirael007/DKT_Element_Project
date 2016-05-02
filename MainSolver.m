@@ -17,7 +17,7 @@
 %%
 
 clc
-clear
+clear all
 
 load material.dat;
 load geometry.dat;
@@ -26,7 +26,7 @@ l = geometry(:,1);
 b = geometry(:,2);
 t = geometry(:,3);
 
-[coords, connectivity] = Mesh_Gen(l,b, [-0.5 -0.5], 20, 20);
+[coords, connectivity] = Mesh_Gen(l,b, [-0.5 -0.5], 10, 10, 'tri');
 
 nel = size(connectivity,1);
 nnel = size(connectivity,2);
@@ -67,10 +67,7 @@ for iel = 1:1:nel
     x_ij = -diff([x, x(1)]);
     y_ij = -diff([y, y(1)]);
     l_ij = x_ij.^2 + y_ij.^2;
-
-    k = zeros(edof,edof); 
-    f = zeros(edof,1);
-    % Loop over all integration points
+    
     
     a_k = num2cell(-x_ij./l_ij);
     b_k = num2cell(0.75.*x_ij.*y_ij./l_ij);
@@ -78,6 +75,16 @@ for iel = 1:1:nel
     d_k = num2cell(-y_ij.^2./l_ij);
     e_k = num2cell((0.25.*y_ij.^2 - 0.5.*x_ij.^2)./l_ij);
 
+    p_k = num2cell(-6*x_ij./l_ij);
+    q_k = num2cell(3*x_ij.*y_ij./l_ij);
+    r_k = num2cell(3*y_ij.^2./l_ij);
+    t_k = num2cell(-6*y_ij./l_ij);       
+    
+    k = zeros(edof,edof); 
+    f = zeros(edof,1);
+
+    % Loop over all integration points
+        
     k = zeros(edof,edof); 
     f = zeros(edof,1);
     
@@ -111,11 +118,11 @@ for iel = 1:1:nel
         for intx = 1:1:3
         xi = pt(intx,1);
         wtx = wt(intx,1);
-            for inty=1:1:3
+         for inty=1:1:3
                 yi = pt(inty,2);
                 wty = wt(inty,2);
 
-                [dHxdxi,dHxdyi, dHydxi, dHydyi] = DKT_dH(p_k, q_k, r_k, t_k, xi, yi);
+                [dHxdxi, dHxdyi, dHydxi, dHydyi] = DKT_dH(p_k, q_k, r_k, t_k, xi, yi);
             
 %                 J = DKQ_jacob(x_ij, y_ij, xi, yi);
                 A = x_ij(3)*y_ij(1)-x_ij(1)*y_ij(3);
@@ -124,14 +131,13 @@ for iel = 1:1:nel
             
                 B = DKT_strain_displacement(x_ij,y_ij,dHxdxi, dHxdyi, dHydxi, dHydyi);
             
-                k = k + B'*D*B*wtx*wty;
+                k = k + A*B'*D*B*wtx*wty;
             
                 fe = El_Force(nnel, N, P);
-                f = f + fe*wtx*wty*2*A;
-            end
-            
+                f = f + fe*wtx*wty*A;
+          end
         end
-        k=2*A*k;
+        
     end
     
     index = Elem_DOF(node,nnel,ndof);
