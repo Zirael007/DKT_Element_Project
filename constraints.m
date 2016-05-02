@@ -1,18 +1,9 @@
 function [kk,ff]=constraints(kk,ff,bcdof,bcval)
 
-%----------------------------------------------------------
-%  Purpose:
-%     Apply constraints to matrix equation [K]{x}={F}
-%
-%  Synopsis:
-%     [kk,ff]=constraints(kk,ff,bcdof,bcval)
-%
-%  Variable Description:
 %     kk - system matrix before applying constraints 
 %     ff - system vector before applying constraints
 %     bcdof - a vector containging constrained d.o.f
 %     bcval - a vector containing contained value 
-%-----------------------------------------------------------
  
  n=length(bcdof);
  sdof=size(kk);

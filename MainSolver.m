@@ -17,7 +17,7 @@
 %%
 
 clc
-clear all
+clear
 
 load material.dat;
 load geometry.dat;
@@ -26,7 +26,7 @@ l = geometry(:,1);
 b = geometry(:,2);
 t = geometry(:,3);
 
-[coords, connectivity] = Mesh_Gen(l,b, [-0.5 -0.5], 10, 10, 'tri');
+[coords, connectivity] = Mesh_Gen(l,b, [-0.5 -0.5], 10, 10, 'quad');
 
 nel = size(connectivity,1);
 nnel = size(connectivity,2);
@@ -154,3 +154,5 @@ bcval = zeros(1,length(bcdof)) ;
 displacement = stif\force;
 
 [w, thetax, thetay] = Post_Proc(displacement);
+
+fprintf('Max Tranverse Displacement: %f\n',min(w));

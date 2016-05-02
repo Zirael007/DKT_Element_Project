@@ -1,18 +1,10 @@
 function bcdof = BoundaryCondition(typeBC,coordinates)
 
-%--------------------------------------------------------------------------
-%   Purpose:
-%           To determine the boundary conditions degree of freedom
-%   Synopsis:
-%           bcdof = BoundaryCondition(typeBC,coordinates)
-%
-%   Variable Description:
 %           bcdof - boundary condition degree of freedom
-%                   dof's are (UZ,RX,RY)
+%                   dof's are (w,RX,RY)
 %           typeBC - string which gives the state of boundary condition
 %           coordinates - geometric coordinates of nodes
 %           
-%--------------------------------------------------------------------------
 
 L1 = find(coordinates(:,2)==min(coordinates(:,2))) ; % at y = 0 (along X-axes)
 L2 = find(coordinates(:,1)==max(coordinates(:,1))) ; % at x = a (along Y-axes)

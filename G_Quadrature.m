@@ -1,8 +1,4 @@
     function [G_point,G_weight] = G_Quadrature(order)
-%-------------------------------------------------------------------
-% Depending on the order, this function determines the Gauss Quadrature
-% based on 2- point or 1-point quadrature rules. 
-%-------------------------------------------------------------------
 
 switch order
     case 4 

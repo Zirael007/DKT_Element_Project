@@ -1,7 +1,7 @@
 function N =  DKQ_shape_fxn(xi, yi)
 
     % Shape functions for Quad element
-    % 8 noded element (4 corners and 4 mid nodes)
+    % 4 noded element (Kirchoff Plate Element)
 
     N(1) = -0.25*((1-xi)*(1-yi)*(1+xi+yi));
     N(2) = -0.25*((1+xi)*(1-yi)*(1-xi+yi));
